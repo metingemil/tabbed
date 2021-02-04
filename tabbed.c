@@ -331,7 +331,7 @@ void
 drawbar(void)
 {
 	XftColor *col;
-	int c, cc, fc, width, nbh, i;
+	int c, cc, fc, width, nbh;
 	char *name = NULL;
 
 	nbh = barvisibility ? vbh : 0;
@@ -348,20 +348,11 @@ drawbar(void)
 		dc.w = ww;
 		XFetchName(dpy, win, &name);
 		drawtext(name ? name : "", dc.norm);
-		XCopyArea(dpy, dc.drawable, win, dc.gc, 0, 0, ww, vbh, 0, 0);
+		XCopyArea(dpy, dc.drawable, win, dc.gc, 0, 0, ww, bh, 0, 0);
 		XSync(dpy, False);
 
 		return;
 	}
-
-	nbh = nclients > 1 ? vbh : 0;
-	if (bh != nbh) {
-		bh = nbh;
-		for (i = 0; i < nclients; i++)
-			XMoveResizeWindow(dpy, clients[i]->win, 0, bh, ww, wh - bh);
-		}
-	if (bh == 0)
-		return;
 
 	width = ww;
 	cc = ww / tabwidth;
